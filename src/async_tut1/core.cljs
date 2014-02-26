@@ -1,7 +1,7 @@
 (ns async-tut1.core
   (:require [goog.dom :as dom]
             [goog.events :as events]
-            [cljs.core.async :refer [put! chan <!]])
+            [cljs.core.async :refer [put! chan <! timeout]])
   (:import [goog.net Jsonp]
                       [goog Uri])
   (:require-macros [cljs.core.async.macros :refer [go]]))
@@ -41,13 +41,19 @@
 (defn display-array-in-element [element arr]
   (set! (.-innerHTML element) (render-query arr)))
 
-(defn display-results[data]
-  (let [[_ results] data
-        result-view (dom/getElement "results")]
+(defn display-results[results]
+  (let [result-view (dom/getElement "results")]
     (display-array-in-element result-view results)))
 
 (let [clicks (listen (dom/getElement "search") "click")]
   (go (while true
         (<! clicks)
-        (display-results (<! (jsonp (query-url (user-query))))))))
+        (display-results (second (<! (jsonp (query-url (user-query))))))
+        (<! (timeout 1000))
+        (display-results ["replacing data" "cool"])
+        (<! (timeout 1000))
+        (display-results (second (<! (jsonp (query-url "tennis"))))))))
 
+(go (doseq [word ["tennis" "soccer" "bowling" "dsaasdas" "ping pong" "talmud"]]
+      (<! (timeout 1000))
+      (display-results (second (<! (jsonp (query-url word)))))))
