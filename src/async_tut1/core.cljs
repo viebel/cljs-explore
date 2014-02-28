@@ -1,6 +1,7 @@
 (ns async-tut1.core
   (:require [goog.dom :as dom]
             [goog.events :as events]
+            [clojure.string :as string]
             [cljs.core.async :refer [put! chan <! timeout]])
   (:import [goog.net Jsonp]
                       [goog Uri])
@@ -48,12 +49,20 @@
 (let [clicks (listen (dom/getElement "search") "click")]
   (go (while true
         (<! clicks)
-        (display-results (second (<! (jsonp (query-url (user-query))))))
-        (<! (timeout 1000))
-        (display-results ["replacing data" "cool"])
-        (<! (timeout 1000))
-        (display-results (second (<! (jsonp (query-url "tennis"))))))))
+        (loop [queries (list (user-query))]
+          (when (< (count queries) 10)
+            (let [results (second (<! (jsonp (query-url (first queries)))))
+                  next-query (second results)]
+              (display-results results)
+              (when-not (nil? next-query)
+                (<! (timeout 2000))
+                (recur (conj queries next-query)))))
+          (println "query is done: " (string/join "->" (reverse queries)))))))
 
-(go (doseq [word ["tennis" "soccer" "bowling" "dsaasdas" "ping pong" "talmud"]]
-      (<! (timeout 1000))
-      (display-results (second (<! (jsonp (query-url word)))))))
+(go (doseq [word ["tennis" "soccer" "bowling" "ping pong" "talmud"]]
+      (println "searching for: " word)
+      (let [t (timeout 300)
+            [v ch] (alts! [t (jsonp (query-url word))])]
+        (if (= t ch)
+          (println "timeout: " word)
+          (display-results (second v))))))
