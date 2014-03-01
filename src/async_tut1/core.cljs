@@ -18,7 +18,7 @@
 (defn listen [element type]
   (let [out (chan)]
   (events/listen element type 
-          (fn[e] (put! out e)))
+          (fn[e] (put! out (.-id element))))
     out))
 
 (defn jsonp[uri]
@@ -31,8 +31,8 @@
   (str
     "<ul>"
     (apply str
-      (for [result results]
-        (str "<li>" result "</li>")))
+           (for [result results]
+             (str "<li>" result "</li>")))
     "</ul>"))
 
 (defn query-url [q]
@@ -89,5 +89,40 @@
   (go (while true
         (<! clicks)
         (do-several-queries))))
+
+
+(defn play-sound [f vol]
+  (set! (.-innerHTML (dom/getElement "sound")) (str "playing freq " f " at volume " vol)))
+
+(defn next-volume [answer vol step]
+  (if (= "yes" answer) (- vol step) (+ vol step)))
+
+(defn run-audio-test [frequencies volume-start volume-step volume-max volume-min]
+  (let [user-input (chan)]
+    (let [yes (listen (dom/getElement "yes") "click")
+          no (listen (dom/getElement "no") "click")]
+      (go (while true
+            (let [[v c] (alts! [yes no])]
+              (>! user-input (if (= yes c) "yes" "no"))))))
+    (go
+      (let [my-res (loop [frequencies frequencies results {}]
+                     (if (empty? frequencies)
+                       results
+                       (let [f (first frequencies)
+                             result (loop [vol volume-start res {}]
+                                      (if (<= volume-min vol volume-max)
+                                        (do
+                                          (play-sound f vol)
+                                          (let [answer (<! user-input)]
+                                            (recur (next-volume answer vol volume-step)
+                                                   (assoc res vol answer))))
+                                        res))]
+                         (recur (rest frequencies) (assoc results f result)))))]
+        (println "Audio Test is done: " my-res)))))
+
+(let [audio-test (listen (dom/getElement "audio-test") "click")]
+  (go (while true
+        (<! audio-test)
+        (run-audio-test (range 3) 75 5 100 50))))
 
 
