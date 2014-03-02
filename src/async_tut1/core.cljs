@@ -17,7 +17,7 @@
 
 (defn listen [element type]
   (let [out (chan)]
-  (events/listen element type 
+  (events/listen element type
           (fn[e] (put! out (.-id element))))
     out))
 
@@ -125,4 +125,30 @@
         (<! audio-test)
         (run-audio-test (range 3) 75 5 100 50))))
 
+
+(def colors ["#FF0000"
+             "#00FF00"
+             "#0000FF"
+             "#00FFFF"
+             "#FFFF00"
+             "#FF00FF"])
+
+(defn make-cell [canvas x y]
+  (let [ctx (-> js/document
+              (.getElementById canvas)
+              (.getContext "2d"))]
+    (go (while true
+          (set! (.-fillStyle ctx) (rand-nth colors))
+          (.fillRect ctx x y 10 10)
+          (<! (timeout (rand-int 1000)))))))
+
+(defn make-scene [canvas rows cols]
+  (dotimes [x cols]
+    (dotimes [y rows]
+      (make-cell canvas (* 10 x) (* 10 y)))))
+
+(let [draw (listen (dom/getElement "draw") "click")]
+  (go (while true
+        (<! draw)
+        (make-scene "canvas" 100 100))))
 
