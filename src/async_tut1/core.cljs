@@ -115,8 +115,7 @@
               (>! user-input (if (= yes c) "yes" "no"))))))
     (go
       (>! result-chan (loop [frequencies frequencies results {}]
-                        (if (empty? frequencies)
-                          results
+                        (if (seq frequencies)
                           (let [f (first frequencies)
                                 result (loop [vol volume-start res {}]
                                          (if (<= volume-min vol volume-max)
@@ -126,7 +125,8 @@
                                                (recur (next-volume answer vol volume-step)
                                                       (assoc res vol answer))))
                                            res))]
-                            (recur (rest frequencies) (assoc results f result)))))))
+                            (recur (rest frequencies) (assoc results f result)))
+                          results))))
     result-chan))
 
 (let [audio-test (listen (dom/getElement "audio-test") "click")]
