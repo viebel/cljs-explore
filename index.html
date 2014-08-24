@@ -1,26 +1,12 @@
 <html>
     <head>
-        <!--script type='text/javascript' id='lt_ws' src='http://localhost:61096/socket.io/lighttable/ws.js'></script-->
+        <script type='text/javascript' id='lt_ws' src='http://localhost:57270/socket.io/lighttable/ws.js'></script>
     </head>
 <body>
-    <input id="query" type="text"></input>
-    <button id="search">Search</button>
-    <button id="queries">QUERIES</button>
-    <input id="num-of-channels" type="number"></input>
-    <button id="channels">CHANNELS</button>
-    <p id="results"></p>
-    <div>
-        <button id="audio-test">AUDIO TEST</button>
-        <button id="yes">YES</button>
-        <button id="no">NO</button>
-    </div>
-    <p id="sound"></p>
-    <button id="draw">DRAW</button>
-    <canvas id="canvas"></canvas>
     <script src="out/goog/base.js" type="text/javascript"></script>
-    <script src="async_tut1.js" type="text/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
     <script type="text/javascript">
-        goog.require("async_tut1.core");
+        goog.require("http");
     </script>
 </body>
 
