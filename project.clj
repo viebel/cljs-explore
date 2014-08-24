@@ -25,7 +25,7 @@
                              :compiler {
                                         :output-to "main.js"
                                         :output-dir "out"
-                                        ;:preamble ["license.js"]
+                                        :preamble ["license.js"]
                                         :optimizations :simple
                                         }}
                        :production {
