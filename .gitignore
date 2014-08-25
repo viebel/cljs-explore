@@ -1,10 +1,15 @@
 pom.xml
 *.swp
+*.swo
 *jar
 /lib/
 /classes/
 /out/
+/out_opt
+/out_test
 /target/
 .lein-deps-sum
 .lein-repl-history
 .lein-plugins/
+.repl
+main.js
