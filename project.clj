@@ -8,7 +8,7 @@
                  [com.cemerick/piggieback "0.1.3"]
                  [net.polyc0l0r/konserve "0.1.0"]
                  [com.andrewmcveigh/cljs-time "0.1.4"]
-                 [org.clojure/core.async "0.1.303.0-886421-alpha"]
+                 [org.clojure/core.async "0.1.346.0-17112a-alpha"]
                  [org.clojure/clojurescript "0.0-2280"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]]
@@ -20,24 +20,18 @@
   :source-paths ["src"]
 
   :cljsbuild {
-              :builds {:dev {
+              :builds {
+                       :dev {
                              :source-paths ["src"]
                              :compiler {
                                         :output-to "main.js"
                                         :output-dir "out"
                                         :static-fns true 
                                         :preamble ["license.js"]
-                                        :optimizations :simple
-                                        }}
+                                        :optimizations :simple}}
                        :production {
                                     :source-paths ["src"]
                                     :compiler {
                                                :output-to "out_opt/main.min.js"
                                                :output-dir "out_opt"
-                                               :optimizations :advanced}}
-                       :test {
-                              :source-paths ["src"]
-                              :compiler {
-                                         :output-to "out/main.test.js"
-                                         :optimizations :simple }}}
-              })
+                                               :optimizations :advanced}}}})

@@ -3,7 +3,6 @@
             [goog.userAgent.product :as product]
             [cljs.reader :as reader]))
 
-(js/alert product/VERSION)
 (js/alert "aaba")
 (defn console [s] (.log js/console s))
 
