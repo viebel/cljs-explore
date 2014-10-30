@@ -12,3 +12,6 @@
 (defn foo [])
 (foo)
 
+(print ({:a 2} :a))
+(print (:a {}))
+

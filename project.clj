@@ -25,6 +25,7 @@
                              :compiler {
                                         :output-to "main.js"
                                         :output-dir "out"
+                                        :static-fns true 
                                         :preamble ["license.js"]
                                         :optimizations :simple
                                         }}
