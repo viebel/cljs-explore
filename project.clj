@@ -4,6 +4,7 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [shodan "0.3.0"]
+                 [spellhouse/clairvoyant "0.0-48-gf5e59d3"]
                  [cljs-http "0.1.14"]
                  [com.cemerick/piggieback "0.1.3"]
                  [net.polyc0l0r/konserve "0.1.0"]
@@ -12,8 +13,6 @@
                  [org.clojure/clojurescript "0.0-2280"]]
 
   :plugins [[lein-cljsbuild "1.0.3"]]
-  :repl-options {:nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
-
 
   :hooks [leiningen.cljsbuild]
 
@@ -28,10 +27,4 @@
                                         :output-dir "out"
                                         :static-fns true 
                                         :preamble ["license.js"]
-                                        :optimizations :simple}}
-                       :production {
-                                    :source-paths ["src"]
-                                    :compiler {
-                                               :output-to "out_opt/main.min.js"
-                                               :output-dir "out_opt"
-                                               :optimizations :advanced}}}})
+                                        :optimizations :simple}} }})
