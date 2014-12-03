@@ -4,7 +4,7 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [shodan "0.3.0"]
-                 [spellhouse/clairvoyant "0.0-48-gf5e59d3"]
+                 [com.cemerick/pprng "0.0.2"]
                  [cljs-http "0.1.14"]
                  [com.cemerick/piggieback "0.1.3"]
                  [net.polyc0l0r/konserve "0.1.0"]
