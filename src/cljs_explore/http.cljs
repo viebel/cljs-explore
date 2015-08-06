@@ -1,4 +1,4 @@
-(ns http2
+(ns prj.http2
   (:require-macros [cljs.core.async.macros :refer [go]])
   (:require [cljs-http.client :as http]
             [cljs.core.async :refer [<! chan]]))
